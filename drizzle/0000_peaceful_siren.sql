@@ -1,3 +1,4 @@
+-- Nora account, conversation, and message storage.
 CREATE TABLE `conversations` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
