@@ -1,0 +1,8 @@
+import { and, asc, eq } from "drizzle-orm";
+import { getDb } from "../../../../db";
+import { conversations, messages } from "../../../../db/schema";
+import { getChatGPTUser } from "../../../chatgpt-auth";
+async function owned(id:string){const user=await getChatGPTUser();if(!user)return null;const [row]=await getDb().select().from(conversations).where(and(eq(conversations.id,id),eq(conversations.userId,user.userId))).limit(1);return row??null}
+export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;const conversation=await owned(id);if(!conversation)return Response.json({error:"Conversación no encontrada."},{status:404});const rows=await getDb().select().from(messages).where(eq(messages.conversationId,id)).orderBy(asc(messages.createdAt));return Response.json({conversation,messages:rows})}
+export async function PATCH(request:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;if(!await owned(id))return Response.json({error:"Conversación no encontrada."},{status:404});const body=await request.json() as {title?:string};const title=body.title?.trim().slice(0,80);if(!title)return Response.json({error:"Título inválido."},{status:400});await getDb().update(conversations).set({title,updatedAt:Date.now()}).where(eq(conversations.id,id));return Response.json({ok:true})}
+export async function DELETE(_:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;if(!await owned(id))return Response.json({error:"Conversación no encontrada."},{status:404});await getDb().delete(conversations).where(eq(conversations.id,id));return Response.json({ok:true})}
