@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   authorization.searchParams.set("scope", "openid email profile");
   authorization.searchParams.set("state", state);
   authorization.searchParams.set("prompt", "select_account");
-  const response = Response.redirect(authorization, 302);
+  const response = new Response(null, { status: 302, headers: { Location: authorization.toString() } });
   response.headers.append("Set-Cookie", `${OAUTH_STATE_COOKIE}=${encodeURIComponent(state)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
   return response;
 }

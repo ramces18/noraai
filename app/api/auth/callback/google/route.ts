@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const encodedReturn = state.split(".")[1];
     let decodedReturn = "/chat";
     try { if (encodedReturn) decodedReturn = atob(encodedReturn.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - encodedReturn.length % 4) % 4)); } catch {}
-    const response = Response.redirect(`${url.origin}${safeRelativeReturnPath(decodedReturn)}`, 302);
+    const response = new Response(null, { status: 302, headers: { Location: `${url.origin}${safeRelativeReturnPath(decodedReturn)}` } });
     response.headers.append("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(session)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`);
     response.headers.append("Set-Cookie", `${OAUTH_STATE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
     return response;
@@ -30,4 +30,4 @@ export async function GET(request: Request) {
     return loginError(url.origin, "No pudimos iniciar sesión en este momento.");
   }
 }
-function loginError(origin: string, message: string) { return Response.redirect(`${origin}/login?error=${encodeURIComponent(message)}`, 302); }
+function loginError(origin: string, message: string) { return new Response(null, { status: 302, headers: { Location: `${origin}/login?error=${encodeURIComponent(message)}` } }); }
