@@ -8,6 +8,12 @@
     "command": "pnpm run build"
   },
   "no_bundle": true,
+  "rules": [
+    {
+      "type": "ESModule",
+      "globs": ["**/*.js", "**/*.mjs"]
+    }
+  ],
   "assets": {
     "directory": "./dist/client",
     "binding": "ASSETS"
