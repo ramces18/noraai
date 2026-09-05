@@ -1,23 +1,18 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "noraai",
-  "main": "./dist/server/index.js",
+  "main": "./worker/index.ts",
   "compatibility_date": "2026-09-05",
   "compatibility_flags": ["nodejs_compat"],
-  "build": {
-    "command": "pnpm run build"
-  },
-  "no_bundle": true,
   "assets": {
-    "directory": "./dist/client",
+    "directory": "./public",
     "binding": "ASSETS"
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "nora-db",
-      "database_id": "506e0115-3998-4ae4-b53a-2bd3582d2e98",
-      "migrations_dir": "./drizzle"
+      "database_id": "506e0115-3998-4ae4-b53a-2bd3582d2e98"
     }
   ],
   "observability": {
