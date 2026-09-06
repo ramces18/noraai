@@ -1,100 +1,57 @@
-# vinext-starter
+# Nora
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Nora es una aplicación de acompañamiento emocional con inteligencia artificial creada por Gerard Ramces Bollard Gonzalez por el Mes de la Prevención del Suicidio.
 
-## Prerequisites
+La aplicación ofrece conversaciones persistentes, memoria controlada por el usuario, personalización visual y de respuesta, acceso con Google o correo, exportación de datos y una interfaz adaptable a celular y computadora. Nora no es un servicio clínico ni de emergencias.
 
-- Node.js `>=22.13.0`
+## Tecnología
 
-## Quick Start
+- React 19 y vinext
+- Cloudflare Workers
+- Cloudflare D1 con Drizzle ORM
+- OpenRouter para las respuestas de IA
+- OAuth 2.0 de Google y acceso con correo/contraseña
+
+## Desarrollo
+
+Requiere Node.js 22.13 o posterior.
 
 ```bash
-npm install
-npm run dev
-npm run build
+pnpm install
+pnpm run dev
 ```
 
-This starter does not use `wrangler.jsonc`.
+Las variables locales viven en `.env` y nunca deben guardarse en Git:
 
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```dotenv
+AUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+OPENROUTER_API_KEY=
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+## Verificación
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+```bash
+pnpm run lint
+pnpm test
+```
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## Base de datos y despliegue
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+Antes de publicar código que dependa de columnas nuevas, aplica las migraciones en producción:
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+```bash
+pnpm exec wrangler d1 migrations apply nora-db --remote
+pnpm run deploy
+```
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+Los secretos de producción se configuran con `wrangler secret put`. El dominio público actual es `https://noraai.qzz.io` y el callback autorizado de Google es:
 
-## Useful Commands
+```text
+https://noraai.qzz.io/api/auth/callback/google
+```
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## Memoria y privacidad
 
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+Nora utiliza el contexto reciente de cada conversación. La memoria entre conversaciones solo se activa con recuerdos añadidos por el usuario, frases explícitas como “recuerda que…” o mensajes marcados con una estrella. Todo puede revisarse, desactivarse, exportarse o eliminarse desde Configuración.

@@ -17,10 +17,10 @@ export async function GET(request: Request) {
     if (!profileResponse.ok) return loginError(url.origin, "No pudimos leer tu perfil de Google.");
     const profile = await profileResponse.json() as GoogleProfile;
     if (!profile.sub || !profile.email || profile.email_verified === false) return loginError(url.origin, "Tu correo de Google no pudo verificarse.");
-    const session = await createSession({ sub: profile.sub, email: profile.email, name: profile.name || profile.email.split("@")[0] });
+    const session = await createSession({ userId: `google:${profile.sub}`, email: profile.email, name: profile.name || profile.email.split("@")[0] });
     const encodedReturn = state.split(".")[1];
     let decodedReturn = "/chat";
-    try { if (encodedReturn) decodedReturn = atob(encodedReturn.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - encodedReturn.length % 4) % 4)); } catch {}
+    try { if (encodedReturn) decodedReturn = atob(encodedReturn.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - encodedReturn.length % 4) % 4)); } catch { decodedReturn = "/chat"; }
     const response = new Response(null, { status: 302, headers: { Location: `${url.origin}${safeRelativeReturnPath(decodedReturn)}` } });
     response.headers.append("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(session)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`);
     response.headers.append("Set-Cookie", `${OAUTH_STATE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);

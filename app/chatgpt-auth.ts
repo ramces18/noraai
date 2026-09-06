@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export type ChatGPTUser = { userId: string; displayName: string; email: string; fullName: string | null };
-type SessionPayload = { sub: string; email: string; name: string; exp: number };
+type SessionPayload = { uid?: string; sub?: string; email: string; name: string; exp: number };
 export const SESSION_COOKIE = "nora_session";
 export const OAUTH_STATE_COOKIE = "nora_oauth_state";
 
@@ -11,7 +11,9 @@ export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const token = readCookie(requestHeaders.get("cookie"), SESSION_COOKIE);
   const session = token ? await verifySession(token) : null;
   if (!session) return null;
-  return { userId: `google:${session.sub}`, displayName: session.name || session.email.split("@")[0], email: session.email, fullName: session.name || null };
+  const userId = session.uid || (session.sub ? `google:${session.sub}` : null);
+  if (!userId) return null;
+  return { userId, displayName: session.name || session.email.split("@")[0], email: session.email, fullName: session.name || null };
 }
 
 export async function requireChatGPTUser(returnTo: string): Promise<ChatGPTUser> {
@@ -23,8 +25,8 @@ export async function requireChatGPTUser(returnTo: string): Promise<ChatGPTUser>
 export function chatGPTSignInPath(returnTo: string): string { return `/login?returnTo=${encodeURIComponent(safeRelativeReturnPath(returnTo))}`; }
 export function chatGPTSignOutPath(returnTo = "/"): string { return `/api/auth/logout?returnTo=${encodeURIComponent(safeRelativeReturnPath(returnTo))}`; }
 
-export async function createSession(payload: Omit<SessionPayload, "exp">): Promise<string> {
-  const session: SessionPayload = { ...payload, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 };
+export async function createSession(payload: { userId: string; email: string; name: string }): Promise<string> {
+  const session: SessionPayload = { uid: payload.userId, email: payload.email, name: payload.name, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 };
   const encoded = base64UrlEncode(JSON.stringify(session));
   return `${encoded}.${await sign(encoded)}`;
 }
@@ -35,7 +37,7 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
   if (!constantTimeEqual(signature, await sign(encoded))) return null;
   try {
     const payload = JSON.parse(base64UrlDecode(encoded)) as SessionPayload;
-    return payload.sub && payload.email && payload.exp > Date.now() / 1000 ? payload : null;
+    return (payload.uid || payload.sub) && payload.email && payload.exp > Date.now() / 1000 ? payload : null;
   } catch { return null; }
 }
 
