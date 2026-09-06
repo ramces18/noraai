@@ -22,6 +22,13 @@
       "when": 1788655200000,
       "tag": "0002_memory_profile_email_auth",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1788663000000,
+      "tag": "0003_emotional_companion",
+      "breakpoints": true
     }
   ]
 }

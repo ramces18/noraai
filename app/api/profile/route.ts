@@ -37,7 +37,7 @@ export async function PATCH(request: Request) {
   if (fontSize) update.fontSize = fontSize;
   if (responseLength) update.responseLength = responseLength;
   if (chatWidth) update.chatWidth = chatWidth;
-  for (const key of ["reduceMotion", "memoryEnabled", "enterToSend", "highContrast"] as const) if (typeof body[key] === "boolean") update[key] = body[key] as boolean;
+  for (const key of ["reduceMotion", "memoryEnabled", "enterToSend", "highContrast", "companionEnabled", "noraUseCareData", "noraUseAlbumMoments", "companionUseWellbeing", "wellbeingStatsEnabled"] as const) if (typeof body[key] === "boolean") update[key] = body[key] as boolean;
   if (typeof body.displayName === "string") {
     const displayName = body.displayName.trim().replace(/\s+/g, " ").slice(0, 60);
     if (displayName.length < 2) return Response.json({ error: "El nombre debe tener al menos 2 caracteres." }, { status: 400 });

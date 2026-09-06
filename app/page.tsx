@@ -5,12 +5,14 @@ const features = [
   { icon: "◫", title: "Tu espacio, a tu manera", text: "Ajusta el tono, la profundidad, el tamaño del texto, el contraste y las animaciones." },
   { icon: "⇩", title: "Tus datos son portables", text: "Exporta una conversación o descarga una copia completa de tu información." },
   { icon: "⌁", title: "Diseñada para cualquier pantalla", text: "Una experiencia clara y accesible tanto en celular como en computadora." },
+  { icon: "♧", title: "Compañero sin rachas", text: "Personaliza una mascota, registra autocuidado y conserva momentos sin puntos, castigos ni días perdidos." },
 ];
 const faqs = [
   ["¿Nora es una psicóloga?", "No. Nora es una inteligencia artificial de acompañamiento emocional. Puede escuchar, ayudarte a poner palabras a lo que sientes y ofrecer ideas de autocuidado, pero no diagnostica ni reemplaza terapia o atención médica."],
   ["¿Qué recuerda Nora?", "El contexto reciente de la conversación, los mensajes que marques como importantes y los recuerdos que añadas voluntariamente. Puedes desactivar la memoria o eliminar cualquier recuerdo."],
   ["¿Quién puede leer mis conversaciones?", "El historial está asociado a tu cuenta. Para producir una respuesta, el mensaje y el contexto necesario se procesan mediante el proveedor de IA. Evita compartir contraseñas, documentos, domicilios u otros datos que no quieras procesar."],
   ["¿Qué hago si estoy en peligro?", "Nora no es un servicio de emergencia. Si existe peligro inmediato o podrías hacerte daño, contacta ahora los servicios de emergencia de tu país y busca a una persona de confianza que pueda permanecer contigo."],
+  ["¿Tengo que cuidar a la mascota todos los días?", "No. El compañero emocional no necesita rachas, no pierde objetos y nunca reclama una ausencia. Puedes desactivarlo por completo, volver cuando quieras y continuar desde donde quedaste."],
 ];
 
 export default function Home() {
@@ -26,7 +28,7 @@ export default function Home() {
 
     <section className="professional-features"><div className="section-tag">PENSADA PARA CUIDAR LA EXPERIENCIA</div><div className="pro-grid expanded">{features.map((feature, index) => <article key={feature.title}><small>{String(index + 1).padStart(2, "0")}</small><span>{feature.icon}</span><h3>{feature.title}</h3><p>{feature.text}</p></article>)}</div></section>
 
-    <section className="how-section" id="como-funciona"><div className="how-heading"><div className="section-tag">CÓMO FUNCIONA</div><h2>Empieza donde estés.</h2><p>No hay formularios clínicos ni una manera correcta de hablar.</p></div><ol><li><span>1</span><div><h3>Entra a tu espacio</h3><p>Accede con Google o crea una cuenta con correo. Tus chats quedan separados por usuario.</p></div></li><li><span>2</span><div><h3>Cuéntalo a tu manera</h3><p>Escribe una frase, una historia completa o simplemente “no sé cómo empezar”.</p></div></li><li><span>3</span><div><h3>Conserva solo lo importante</h3><p>Marca momentos con una estrella o escribe “recuerda que…”. Tú puedes revisar y borrar todo.</p></div></li></ol></section>
+    <section className="how-section" id="como-funciona"><div className="how-heading"><div className="section-tag">CÓMO FUNCIONA</div><h2>Empieza donde estés.</h2><p>No hay formularios clínicos ni una manera correcta de hablar.</p></div><ol><li><span>1</span><div><h3>Entra a tu espacio</h3><p>Accede con Google o crea una cuenta con correo. Tus chats quedan separados por usuario.</p></div></li><li><span>2</span><div><h3>Cuéntalo a tu manera</h3><p>Escribe una frase, una historia completa o simplemente “no sé cómo empezar”.</p></div></li><li><span>3</span><div><h3>Conserva solo lo importante</h3><p>Marca momentos con una estrella o escribe “recuerda que…”. Tú puedes revisar y borrar todo.</p></div></li><li><span>4</span><div><h3>Avanza sin empezar de cero</h3><p>Tu compañero reconoce autocuidado y buenos momentos sin rachas, puntos, culpa ni recompensas que puedas perder.</p></div></li></ol></section>
 
     <section className="creator" id="creador"><div className="creator-art"><span className="logo-mark creator-mark">n</span><div className="creator-ring"/></div><div><div className="section-tag">QUIÉN CREÓ NORA</div><h2>Una idea de<br/><em>Gerard Ramces<br/>Bollard Gonzalez.</em></h2><p>Nora nace en 2026 como un proyecto por el Mes de la Prevención del Suicidio, con la intención de acercar una primera escucha a quienes sienten que no tienen con quién hablar y recordar que pedir ayuda nunca debería dar vergüenza.</p><p>El proyecto combina tecnología, diseño emocional y el deseo de crear una experiencia accesible desde cualquier dispositivo.</p><a className="creator-cta" href="/chat">Conocer a Nora <span>→</span></a></div></section>
 

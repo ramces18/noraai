@@ -48,3 +48,18 @@ test("discloses Nora's limits and data processing", async () => {
   assert.match(home, /peligro inmediato/i);
   assert.match(home, /Brené Brown/);
 });
+
+test("implements an autonomous companion without streaks or emotional pressure", async () => {
+  const [component, catalog, schema, migration, chat] = await Promise.all([
+    read("app/companion/CompanionApp.tsx"), read("app/companion/catalog.ts"), read("db/schema.ts"),
+    read("drizzle/0003_emotional_companion.sql"), read("app/api/chat/route.ts"),
+  ]);
+  assert.match(`${component}\n${catalog}`, /Ahora no quiero hacer nada/);
+  assert.match(component, /Nunca se pierde|nunca pierde|Nada se pierde/i);
+  assert.match(component, /noraUseCareData/);
+  assert.match(component, /noraUseAlbumMoments/);
+  assert.match(catalog, /No estoy contando días perfectos/);
+  assert.match(chat, /Un recuerdo positivo nunca invalida una emoción actual/);
+  assert.doesNotMatch(`${schema}\n${migration}`, /streak_(?:count|days)|score_(?:total|points)|penalty_count/i);
+  assert.doesNotMatch(chat, /photoData/);
+});
