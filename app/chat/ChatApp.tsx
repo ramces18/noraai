@@ -269,10 +269,14 @@ function Toggle({ label, help, checked, onChange }: { label: string; help: strin
 }
 
 async function requestJson(url: string, options?: RequestInit) {
-  const response = await fetch(url, options);
-  const data = await response.json().catch(() => ({})) as ApiData;
+  let response: Response;
+  try { response = await fetch(url, { ...options, credentials: "same-origin", headers: { Accept: "application/json", ...(options?.headers ?? {}) } }); }
+  catch { throw new Error("No pudimos conectar con Nora. Revisa tu conexión e inténtalo otra vez."); }
+  const raw = await response.text();
+  let data: ApiData = {};
+  try { data = raw ? JSON.parse(raw) as ApiData : {}; } catch { /* El Worker puede devolver una página de error sin JSON. */ }
   if (response.status === 401) throw new Error("AUTH_REQUIRED");
-  if (!response.ok) throw new Error(typeof data.error === "string" ? data.error : "Algo no salió bien. Inténtalo nuevamente.");
+  if (!response.ok) throw new Error(typeof data.error === "string" ? data.error : `No pudimos completar esta acción (${response.status}).`);
   return data;
 }
 
