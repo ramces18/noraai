@@ -6,7 +6,8 @@ import "./companion.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Mi compañero — Nora", description: "Un espacio de autocuidado sin rachas, culpa ni perfección." };
 
-export default async function CompanionPage() {
+export default async function CompanionPage({ searchParams }: { searchParams: Promise<{ welcome?: string }> }) {
   const user = await requireChatGPTUser("/companion");
-  return <CompanionApp user={{ name: user.displayName, email: user.email }}/>;
+  const params = await searchParams;
+  return <CompanionApp user={{ name: user.displayName, email: user.email }} googleWelcome={params.welcome === "google"}/>;
 }

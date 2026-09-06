@@ -11,14 +11,14 @@ type Profile = {
   responseLength: string; memoryEnabled: boolean; enterToSend: boolean; highContrast: boolean; chatWidth: string;
   pronouns: string; aboutMe: string;
 };
-type Props = { user: { name: string; email: string } };
+type Props = { user: { name: string; email: string }; googleWelcome?: boolean };
 type SettingsTab = "profile" | "nora" | "appearance" | "memory" | "privacy";
 type ApiData = { conversations?: Conversation[]; profile?: Profile; conversation?: Conversation; messages?: Message[]; userMessage?: Message; message?: Message; title?: string; remembered?: boolean; memories?: Memory[]; memory?: Memory; error?: string; ok?: boolean };
 
 const DEFAULT_PROFILE: Profile = { displayName: "", email: "", theme: "system", tone: "warm", fontSize: "medium", reduceMotion: false, responseLength: "balanced", memoryEnabled: true, enterToSend: true, highContrast: false, chatWidth: "comfortable", pronouns: "", aboutMe: "" };
 const MEMORY_LABELS: Record<string, string> = { personal: "Sobre mí", support: "Me ayuda", goal: "Objetivo", boundary: "Evitar" };
 
-export default function ChatApp({ user }: Props) {
+export default function ChatApp({ user, googleWelcome = false }: Props) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [active, setActive] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -35,7 +35,7 @@ export default function ChatApp({ user }: Props) {
   const [memoryText, setMemoryText] = useState("");
   const [memoryCategory, setMemoryCategory] = useState("personal");
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState(googleWelcome ? "¡Bienvenido a Nora! Gracias por entrar con Google y confiar en este espacio." : "");
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -68,6 +68,12 @@ export default function ChatApp({ user }: Props) {
     const timer = window.setTimeout(() => setNotice(""), 3200);
     return () => window.clearTimeout(timer);
   }, [notice]);
+  useEffect(() => {
+    if (!googleWelcome) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("welcome");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [googleWelcome]);
   useEffect(() => {
     if (!settings) return;
     const close = (event: globalThis.KeyboardEvent) => { if (event.key === "Escape") setSettings(false); };

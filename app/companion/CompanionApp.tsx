@@ -20,7 +20,7 @@ const DEFAULT_COMPANION: Companion = { userId: "", petType: "cat", name: "Lumi",
 const DEFAULT_PROFILE: Profile = { displayName: "", theme: "system", reduceMotion: false, companionEnabled: true, noraUseCareData: false, noraUseAlbumMoments: false, companionUseWellbeing: true, wellbeingStatsEnabled: true };
 const ACTION_TO_ACTIVITY: Record<string, string> = { pause: "rest", write: "journal", walk: "walk", talk: "connect", relax: "rest", water: "water", music: "joy", rest: "rest" };
 
-export default function CompanionApp({ user }: { user: { name: string; email: string } }) {
+export default function CompanionApp({ user, googleWelcome = false }: { user: { name: string; email: string }; googleWelcome?: boolean }) {
   const [companion, setCompanion] = useState<Companion>(DEFAULT_COMPANION);
   const [draft, setDraft] = useState<Companion>(DEFAULT_COMPANION);
   const [profile, setProfile] = useState<Profile>({ ...DEFAULT_PROFILE, displayName: user.name });
@@ -44,7 +44,7 @@ export default function CompanionApp({ user }: { user: { name: string; email: st
   const [shareMoment, setShareMoment] = useState(false);
   const [photoLoading, setPhotoLoading] = useState(false);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState(googleWelcome ? "¡Bienvenido a Nora! Gracias por entrar con Google y confiar en este espacio." : "");
 
   useEffect(() => {
     let cancelled = false;
@@ -74,6 +74,12 @@ export default function CompanionApp({ user }: { user: { name: string; email: st
     const timer = window.setTimeout(() => setNotice(""), 3200);
     return () => window.clearTimeout(timer);
   }, [notice]);
+  useEffect(() => {
+    if (!googleWelcome) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("welcome");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [googleWelcome]);
 
   const topActivities = useMemo(() => Object.entries(stats?.byActivity ?? {}).sort((a, b) => b[1] - a[1]).slice(0, 3), [stats]);
 
