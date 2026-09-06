@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="40" x2="1780" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#171717"/>
+      <stop offset=".48" stop-color="#080808"/>
+      <stop offset="1" stop-color="#121212"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="930" y1="120" x2="1730" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".04"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="34" stdDeviation="38" flood-color="#000" flood-opacity=".6"/>
+    </filter>
+    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="70"/>
+    </filter>
+    <clipPath id="desktop"><rect x="1056" y="159" width="714" height="462" rx="22"/></clipPath>
+    <clipPath id="phone"><rect x="873" y="417" width="304" height="584" rx="46"/></clipPath>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="1650" cy="180" r="340" fill="#FFFFFF" fill-opacity=".035"/>
+  <circle cx="1650" cy="180" r="255" stroke="#FFFFFF" stroke-opacity=".08"/>
+  <circle cx="1650" cy="180" r="170" stroke="#FFFFFF" stroke-opacity=".11"/>
+  <circle cx="1460" cy="870" r="250" fill="#FFFFFF" fill-opacity=".025" filter="url(#soft)"/>
+  <path d="M0 922C423 809 724 1009 1128 909C1426 836 1608 734 1920 783V1080H0V922Z" fill="#FFFFFF" fill-opacity=".025"/>
+
+  <g transform="translate(92 76)">
+    <circle cx="35" cy="35" r="34" fill="#F7F7F4"/>
+    <text x="35" y="47" fill="#0A0A0A" font-family="Georgia, serif" font-size="39" text-anchor="middle">n</text>
+    <text x="86" y="45" fill="#FFFFFF" font-family="Georgia, serif" font-size="40" letter-spacing="-2">nora</text>
+    <text x="86" y="68" fill="#8F8F8B" font-family="Arial, sans-serif" font-size="10" letter-spacing="2.8">APOYO EMOCIONAL CON IA</text>
+  </g>
+
+  <g transform="translate(94 238)">
+    <rect width="232" height="32" rx="16" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".15"/>
+    <circle cx="18" cy="16" r="4" fill="#F7F7F4"/>
+    <text x="32" y="20" fill="#D0D0CC" font-family="Arial, sans-serif" font-size="10" font-weight="600" letter-spacing="1.8">UN ESPACIO SIN JUICIOS</text>
+  </g>
+
+  <text x="94" y="355" fill="#FFFFFF" font-family="Georgia, serif" font-size="86" letter-spacing="-4">
+    <tspan x="94" dy="0">Hablar también</tspan>
+    <tspan x="94" dy="88">es una forma</tspan>
+    <tspan x="94" dy="88" font-style="italic" fill="#BDBDB8">de cuidarte.</tspan>
+  </text>
+  <text x="98" y="665" fill="#A8A8A3" font-family="Arial, sans-serif" font-size="20">
+    <tspan x="98" dy="0">Nora escucha, acompaña y te ayuda a entender lo que sientes.</tspan>
+    <tspan x="98" dy="34">A tu ritmo, desde cualquier dispositivo.</tspan>
+  </text>
+
+  <g transform="translate(98 780)">
+    <rect width="257" height="61" rx="30.5" fill="#F7F7F4"/>
+    <text x="28" y="38" fill="#0A0A0A" font-family="Arial, sans-serif" font-size="15" font-weight="700">Conoce a Nora</text>
+    <circle cx="221" cy="30.5" r="20" fill="#0A0A0A"/>
+    <path d="M214 31H228M223 26L228 31L223 36" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="98" y="875" fill="#70706D" font-family="Arial, sans-serif" font-size="11" letter-spacing="1.3">NORAAI.QZZ.IO</text>
+  <text x="98" y="934" fill="#8D8D88" font-family="Arial, sans-serif" font-size="12">Creada por Gerard Ramces Bollard Gonzalez</text>
+  <text x="98" y="957" fill="#666662" font-family="Arial, sans-serif" font-size="10">Un proyecto por el Mes de la Prevención del Suicidio</text>
+
+  <g filter="url(#shadow)">
+    <rect x="1037" y="140" width="752" height="500" rx="34" fill="#242424" stroke="#FFFFFF" stroke-opacity=".18"/>
+    <circle cx="1065" cy="164" r="5" fill="#777"/>
+    <circle cx="1082" cy="164" r="5" fill="#555"/>
+    <circle cx="1099" cy="164" r="5" fill="#3E3E3E"/>
+    <g clip-path="url(#desktop)">
+      <rect x="1056" y="159" width="714" height="462" fill="#0A0A0A"/>
+      <rect x="1056" y="159" width="192" height="462" fill="#141414"/>
+      <circle cx="1086" cy="194" r="18" fill="#F7F7F4"/>
+      <text x="1086" y="202" fill="#0A0A0A" font-family="Georgia, serif" font-size="23" text-anchor="middle">n</text>
+      <text x="1117" y="200" fill="#F7F7F4" font-family="Georgia, serif" font-size="23">nora</text>
+      <rect x="1074" y="235" width="155" height="40" rx="12" fill="#F7F7F4"/>
+      <text x="1091" y="260" fill="#111" font-family="Arial, sans-serif" font-size="11" font-weight="700">＋ Nueva conversación</text>
+      <text x="1075" y="314" fill="#696965" font-family="Arial, sans-serif" font-size="8" letter-spacing="1.6">CONVERSACIONES</text>
+      <rect x="1075" y="334" width="154" height="30" rx="8" fill="#222"/>
+      <text x="1086" y="353" fill="#D8D8D4" font-family="Arial, sans-serif" font-size="9">Hoy me siento diferente</text>
+      <text x="1086" y="391" fill="#8D8D88" font-family="Arial, sans-serif" font-size="9">Quiero entender algo</text>
+      <line x1="1075" y1="531" x2="1229" y2="531" stroke="#30302E"/>
+      <text x="1081" y="558" fill="#C2C2BD" font-family="Arial, sans-serif" font-size="9">♡  Mi compañero</text>
+      <text x="1081" y="583" fill="#C2C2BD" font-family="Arial, sans-serif" font-size="9">◇  Recuerdos</text>
+
+      <text x="1330" y="250" fill="#8B8B86" font-family="Arial, sans-serif" font-size="8" letter-spacing="1.5">UN LUGAR PARA HABLAR SIN JUICIOS</text>
+      <circle cx="1420" cy="306" r="28" fill="#F7F7F4"/>
+      <text x="1420" y="317" fill="#0B0B0B" font-family="Georgia, serif" font-size="34" text-anchor="middle">n</text>
+      <text x="1294" y="382" fill="#FFFFFF" font-family="Georgia, serif" font-size="43" letter-spacing="-2">Hola, Ramces.</text>
+      <text x="1284" y="420" fill="#959590" font-family="Arial, sans-serif" font-size="12">Puedes empezar por donde te resulte más fácil.</text>
+      <rect x="1280" y="463" width="215" height="53" rx="13" fill="#151515" stroke="#343434"/>
+      <text x="1297" y="495" fill="#DEDEDA" font-family="Arial, sans-serif" font-size="10">Necesito desahogarme</text>
+      <text x="1472" y="495" fill="#777" font-family="Arial, sans-serif" font-size="15">→</text>
+      <rect x="1510" y="463" width="215" height="53" rx="13" fill="#151515" stroke="#343434"/>
+      <text x="1527" y="495" fill="#DEDEDA" font-family="Arial, sans-serif" font-size="10">Solo necesito compañía</text>
+      <text x="1702" y="495" fill="#777" font-family="Arial, sans-serif" font-size="15">→</text>
+      <rect x="1280" y="546" width="445" height="55" rx="20" fill="#151515" stroke="#343434"/>
+      <text x="1302" y="579" fill="#71716D" font-family="Arial, sans-serif" font-size="11">Escribe lo que estás sintiendo…</text>
+      <circle cx="1696" cy="573" r="18" fill="#F7F7F4"/>
+      <path d="M1696 580V566M1691 571L1696 566L1701 571" stroke="#111" stroke-width="1.7" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="849" y="393" width="352" height="632" rx="62" fill="#202020" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="2"/>
+    <g clip-path="url(#phone)">
+      <rect x="873" y="417" width="304" height="584" fill="#F4F3EF"/>
+      <rect x="873" y="417" width="304" height="61" fill="#F4F3EF"/>
+      <circle cx="909" cy="448" r="17" fill="#0A0A0A"/>
+      <text x="909" y="456" fill="#FFFFFF" font-family="Georgia, serif" font-size="22" text-anchor="middle">n</text>
+      <text x="947" y="453" fill="#111" font-family="Georgia, serif" font-size="20">Nora</text>
+      <circle cx="1142" cy="448" r="16" fill="#111"/>
+      <text x="1142" y="453" fill="#FFF" font-family="Arial, sans-serif" font-size="9" text-anchor="middle">R</text>
+      <text x="899" y="548" fill="#8A8983" font-family="Arial, sans-serif" font-size="8" letter-spacing="1.2">HOY, 10:08</text>
+      <circle cx="911" cy="600" r="15" fill="#111"/>
+      <text x="911" y="607" fill="#FFF" font-family="Georgia, serif" font-size="19" text-anchor="middle">n</text>
+      <text x="940" y="585" fill="#111" font-family="Arial, sans-serif" font-size="10" font-weight="700">Nora</text>
+      <text x="940" y="608" fill="#2C2C2A" font-family="Arial, sans-serif" font-size="12">Te leo. ¿Qué parte de hoy</text>
+      <text x="940" y="628" fill="#2C2C2A" font-family="Arial, sans-serif" font-size="12">se sintió más pesada?</text>
+      <rect x="953" y="682" width="194" height="76" rx="18" fill="#E5E4E0"/>
+      <text x="971" y="712" fill="#262624" font-family="Arial, sans-serif" font-size="12">No sé explicarlo bien.</text>
+      <text x="971" y="734" fill="#262624" font-family="Arial, sans-serif" font-size="12">Solo necesitaba hablar.</text>
+      <circle cx="911" cy="817" r="15" fill="#111"/>
+      <text x="911" y="824" fill="#FFF" font-family="Georgia, serif" font-size="19" text-anchor="middle">n</text>
+      <text x="940" y="802" fill="#111" font-family="Arial, sans-serif" font-size="10" font-weight="700">Nora</text>
+      <text x="940" y="825" fill="#2C2C2A" font-family="Arial, sans-serif" font-size="12">No tienes que explicarlo</text>
+      <text x="940" y="845" fill="#2C2C2A" font-family="Arial, sans-serif" font-size="12">perfecto. Podemos quedarnos</text>
+      <text x="940" y="865" fill="#2C2C2A" font-family="Arial, sans-serif" font-size="12">aquí un momento.</text>
+      <rect x="892" y="925" width="266" height="55" rx="20" fill="#FFFFFF" stroke="#D3D2CE"/>
+      <text x="911" y="958" fill="#969690" font-family="Arial, sans-serif" font-size="11">Escribe lo que sientes…</text>
+      <circle cx="1131" cy="952" r="18" fill="#111"/>
+      <path d="M1131 959V945M1126 950L1131 945L1136 950" stroke="#FFF" stroke-width="1.7" stroke-linecap="round"/>
+    </g>
+    <rect x="957" y="405" width="137" height="22" rx="11" fill="#202020"/>
+  </g>
+
+  <g transform="translate(1440 700)">
+    <rect width="344" height="172" rx="28" fill="url(#glass)" stroke="#FFFFFF" stroke-opacity=".16"/>
+    <text x="28" y="37" fill="#8C8C87" font-family="Arial, sans-serif" font-size="8" letter-spacing="1.7">ACOMPAÑAMIENTO A TU RITMO</text>
+    <text x="28" y="79" fill="#FFFFFF" font-family="Georgia, serif" font-size="28">Escucha primero.</text>
+    <text x="28" y="111" fill="#FFFFFF" font-family="Georgia, serif" font-size="28">Orienta después.</text>
+    <line x1="28" y1="137" x2="316" y2="137" stroke="#FFFFFF" stroke-opacity=".13"/>
+    <text x="28" y="157" fill="#82827D" font-family="Arial, sans-serif" font-size="8">PRIVADO · PERSONALIZABLE · ACCESIBLE</text>
+  </g>
+
+  <path d="M1834 62L1839 77L1854 82L1839 87L1834 102L1829 87L1814 82L1829 77L1834 62Z" fill="#FFFFFF" fill-opacity=".55"/>
+  <path d="M816 157L820 169L832 173L820 177L816 189L812 177L800 173L812 169L816 157Z" fill="#FFFFFF" fill-opacity=".32"/>
+</svg>
