@@ -20,3 +20,13 @@
 /* Capas visuales de la mascota: volumen suave, ojos expresivos y accesorios con profundidad. */
 .pet-body{transform-box:fill-box;transform-origin:center bottom}.pet-torso{filter:drop-shadow(0 7px 3px #00000014)}.pet-head{filter:drop-shadow(0 5px 3px #00000012)}.pet-ear{transform-origin:center bottom;transition:transform .35s ease}.pet-ear-inner{opacity:.34}.pet-highlight{pointer-events:none;mix-blend-mode:screen}.pet-face{transform-origin:140px 106px}.pet-muzzle{filter:brightness(1.08)}.pet-eye{transition:ry .25s ease}.pet-mouth{transition:d .25s ease}.pet-paws{filter:drop-shadow(0 4px 2px #0002)}.pet-accessory{filter:drop-shadow(0 4px 2px #0002)}.pet-bright .pet-ear:nth-of-type(2){transform:rotate(3deg)}.pet-bright .pet-ear:nth-of-type(4){transform:rotate(-3deg)}.pet-near .pet-face{transform:translateY(-2px)}.pet-rest .pet-face{transform:translateY(3px)}.pet-rest .pet-head{filter:drop-shadow(0 3px 2px #00000018)}
 .setup-preview .pet-visual{filter:drop-shadow(0 11px 8px #0003);background:radial-gradient(circle at 50% 52%,#ffffff66,transparent 62%);border-radius:50%}.setup-choice button,.activity-grid button,.gentle-actions button,.space-panel>button,.companion-hero>button,.moment-card footer button{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}.setup-choice button:hover,.activity-grid button:hover,.gentle-actions button:hover,.space-panel>button:hover,.companion-hero>button:hover{transform:translateY(-2px);box-shadow:0 8px 20px #0000000c}.setup-choice button:focus-visible,.activity-grid button:focus-visible,.gentle-actions button:focus-visible,.space-panel>button:focus-visible,.companion-hero>button:focus-visible,.moment-card footer button:focus-visible,.primary-action:focus-visible{outline:3px solid #8e8a80;outline-offset:3px}
+
+/* El zorro tiene una silueta propia: frente angular, orejas altas, pecho claro y cola tupida. */
+.pet-fox .pet-fox-head{filter:drop-shadow(0 6px 3px #00000016)}
+.pet-fox .pet-chest{filter:drop-shadow(0 3px 2px #0002)}
+.pet-fox .pet-eye{ry:8px}
+.pet-fox .pet-tail{filter:drop-shadow(3px 5px 2px #0002)}
+.pet-fox .pet-nose{transform-origin:140px 110px}
+.pet-fox .pet-ear{transform-origin:center bottom}
+.pet-fox.pet-bright .pet-ear:nth-of-type(2){transform:rotate(3deg)}
+.pet-fox.pet-bright .pet-ear:nth-of-type(4){transform:rotate(-3deg)}
