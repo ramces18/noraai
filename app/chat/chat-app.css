@@ -8,3 +8,4 @@
 .side-links>a{display:block;width:100%;color:inherit;text-align:left;padding:8px;font:12px "DM Sans"}.side-links>a span{display:inline-block;width:23px;color:var(--muted)}
 /* El fondo de cierre nunca debe capturar clics destinados al panel. */
 .modal-dismiss-layer{z-index:0!important}.settings-modal{position:relative;z-index:1}
+.side-links>a{display:block;width:100%;border:0;background:none;color:inherit;text-align:left;padding:8px;font:12px "DM Sans";cursor:pointer}.side-links>a span{display:inline-block;width:23px;color:var(--muted)}
