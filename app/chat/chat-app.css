@@ -9,3 +9,24 @@
 /* El fondo de cierre nunca debe capturar clics destinados al panel. */
 .modal-dismiss-layer{z-index:0!important}.settings-modal{position:relative;z-index:1}
 .side-links>a{display:block;width:100%;border:0;background:none;color:inherit;text-align:left;padding:8px;font:12px "DM Sans";cursor:pointer}.side-links>a span{display:inline-block;width:23px;color:var(--muted)}
+
+/* Bienvenida de Google: un primer encuentro visible, cálido y cómodo en móvil. */
+.google-welcome-backdrop{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:#080808d9;backdrop-filter:blur(13px);animation:googleWelcomeFade .35s ease both}
+.google-welcome-card{position:relative;width:min(560px,100%);overflow:hidden;border:1px solid #ffffff2b;border-radius:30px;padding:48px 46px 38px;background:linear-gradient(145deg,#1b1b1b,#090909 72%);color:#fff;box-shadow:0 35px 100px #0009;text-align:center;animation:googleWelcomeRise .55s cubic-bezier(.2,.8,.2,1) both}
+.google-welcome-card:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 50% 34%,#ffffff18,transparent 42%);pointer-events:none}
+.google-welcome-close{position:absolute;right:15px;top:15px;z-index:2;width:34px;height:34px;border:1px solid #ffffff38;border-radius:50%;background:#ffffff12;color:#fff;font-size:20px;line-height:1;cursor:pointer;transition:background .2s ease,transform .2s ease}
+.google-welcome-close:hover{background:#ffffff25;transform:rotate(8deg)}
+.google-welcome-kicker{position:relative;z-index:1;display:block;color:#bdbdbd;font-size:9px;letter-spacing:2px}
+.google-welcome-logo{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:10px;margin:24px auto 18px}
+.google-welcome-logo .logo-mark{background:#fff;color:#111;box-shadow:0 0 0 10px #ffffff12,0 0 55px #ffffff35}
+.google-welcome-spark{color:#fff;font-size:25px;animation:googleWelcomeSpark 2s ease-in-out infinite}
+.google-welcome-card h2{position:relative;z-index:1;font:500 clamp(35px,6vw,55px)/1 "Fraunces";letter-spacing:-2px;margin:0 0 15px}
+.google-welcome-card p{position:relative;z-index:1;margin:0 auto;max-width:430px;color:#d0d0d0;font-size:13px;line-height:1.7}
+.google-welcome-cta{position:relative;z-index:1;margin-top:28px;border:0;border-radius:999px;background:#fff;color:#111;padding:13px 18px 13px 22px;font:600 12px "DM Sans";cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.google-welcome-cta span{margin-left:27px;font-size:16px}.google-welcome-cta:hover{transform:translateY(-2px);box-shadow:0 12px 35px #fff2}
+.google-welcome-card>small{position:relative;z-index:1;display:block;margin-top:18px;color:#999;font-size:9px;line-height:1.5}
+.google-welcome-orbit{position:absolute;inset:45px 90px auto;height:260px;border:1px solid #ffffff14;border-radius:50%;transform:rotate(-18deg);pointer-events:none}
+.google-welcome-orbit span{position:absolute;color:#ffffffaa;font-size:17px}.google-welcome-orbit span:first-child{top:-9px;left:18%}.google-welcome-orbit span:nth-child(2){right:8%;top:42%}.google-welcome-orbit span:last-child{bottom:-9px;left:28%}
+@keyframes googleWelcomeFade{from{opacity:0}to{opacity:1}}@keyframes googleWelcomeRise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}@keyframes googleWelcomeSpark{0%,100%{transform:rotate(0) scale(1);opacity:.6}50%{transform:rotate(14deg) scale(1.2);opacity:1}}
+@media(max-width:520px){.google-welcome-backdrop{padding:12px}.google-welcome-card{padding:40px 23px 28px;border-radius:24px}.google-welcome-orbit{inset:47px 38px auto;height:220px}.google-welcome-card p{font-size:12px}.google-welcome-card h2{font-size:38px}}
+@media(prefers-reduced-motion:reduce){.google-welcome-backdrop,.google-welcome-card,.google-welcome-spark{animation:none!important}}

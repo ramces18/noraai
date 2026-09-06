@@ -26,6 +26,7 @@ export async function GET(request: Request) {
     const response = new Response(null, { status: 302, headers: { Location: destination.toString() } });
     response.headers.append("Set-Cookie", `${SESSION_COOKIE}=${encodeURIComponent(session)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`);
     response.headers.append("Set-Cookie", `${OAUTH_STATE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
+    response.headers.append("Set-Cookie", `nora_google_welcome=1; Path=/; Secure; SameSite=Lax; Max-Age=90`);
     return response;
   } catch (error) {
     console.error(JSON.stringify({ event: "google_auth_error", message: error instanceof Error ? error.message : "unknown" }));

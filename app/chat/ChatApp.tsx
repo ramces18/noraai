@@ -35,7 +35,8 @@ export default function ChatApp({ user, googleWelcome = false }: Props) {
   const [memoryText, setMemoryText] = useState("");
   const [memoryCategory, setMemoryCategory] = useState("personal");
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState(googleWelcome ? "¡Bienvenido a Nora! Gracias por entrar con Google y confiar en este espacio." : "");
+  const [notice, setNotice] = useState("");
+  const [showGoogleWelcome, setShowGoogleWelcome] = useState(googleWelcome);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -73,6 +74,10 @@ export default function ChatApp({ user, googleWelcome = false }: Props) {
     const url = new URL(window.location.href);
     url.searchParams.delete("welcome");
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    document.cookie = "nora_google_welcome=; Path=/; Max-Age=0; SameSite=Lax; Secure";
+    const closeWithEscape = (event: globalThis.KeyboardEvent) => { if (event.key === "Escape") setShowGoogleWelcome(false); };
+    document.addEventListener("keydown", closeWithEscape);
+    return () => document.removeEventListener("keydown", closeWithEscape);
   }, [googleWelcome]);
   useEffect(() => {
     if (!settings) return;
@@ -241,6 +246,11 @@ export default function ChatApp({ user, googleWelcome = false }: Props) {
     setError(message);
   }
 
+  function dismissGoogleWelcome() {
+    setShowGoogleWelcome(false);
+    window.setTimeout(() => textareaRef.current?.focus(), 80);
+  }
+
   return <div className="chat-shell">
     <button className={sidebar ? "sidebar-scrim visible" : "sidebar-scrim"} onClick={() => setSidebar(false)} aria-label="Cerrar menú"/>
     <aside className={sidebar ? "sidebar open" : "sidebar"} aria-label="Historial de conversaciones">
@@ -267,6 +277,8 @@ export default function ChatApp({ user, googleWelcome = false }: Props) {
       {settingsTab === "memory" && <section className="settings-pane"><div className="memory-intro"><span>◇</span><div><h3>Recuerdos transparentes</h3><p>Nora solo usa esta lista y los mensajes que marques con ☆. Puedes apagar la memoria sin borrar nada.</p></div></div><form className="memory-form" onSubmit={addMemory}><select value={memoryCategory} onChange={event => setMemoryCategory(event.target.value)} aria-label="Tipo de recuerdo"><option value="personal">Sobre mí</option><option value="support">Algo que me ayuda</option><option value="goal">Un objetivo</option><option value="boundary">Algo que prefiero evitar</option></select><div><input value={memoryText} onChange={event => setMemoryText(event.target.value)} maxLength={240} placeholder="Ej.: Cuando estoy ansioso prefiero preguntas cortas"/><button disabled={!memoryText.trim()} aria-label="Añadir recuerdo">＋</button></div></form><p className="memory-hint">También puedes escribir en el chat “recuerda que…” y Nora lo añadirá aquí.</p><div className="memory-list">{memories.length === 0 ? <div className="empty-memory"><span>○</span><p>Aún no hay recuerdos. Nora seguirá usando únicamente el contexto de la conversación actual.</p></div> : memories.map(memory => <article key={memory.id}><span>{MEMORY_LABELS[memory.category] ?? "Recuerdo"}</span><p>{memory.content}</p><button onClick={() => deleteMemory(memory.id)} aria-label="Eliminar recuerdo">×</button></article>)}</div></section>}
       {settingsTab === "privacy" && <section className="settings-pane"><div className="privacy-card"><h3>Tu información, bajo tu control</h3><p>Guardamos tu perfil, preferencias, recuerdos y chats para mantener continuidad. Cuando Nora responde, enviamos al proveedor de IA el mensaje, el contexto reciente y los recuerdos activados. No compartas contraseñas, documentos, direcciones ni información que no quieras procesar.</p></div><a className="data-action" href="/companion"><span>♡</span><div><b>Privacidad de mi compañero</b><small>Decide qué puede usar Nora, la mascota y las observaciones mensuales.</small></div></a><a className="data-action" href="/api/account" download><span>⇩</span><div><b>Descargar mis datos</b><small>Recibe perfil, mascota, álbum, autocuidado, recuerdos y conversaciones en JSON.</small></div></a><button type="button" className="data-action" onClick={exportConversation} disabled={!messages.length}><span>□</span><div><b>Exportar conversación actual</b><small>Guárdala como un archivo de texto.</small></div></button><a className="signout" href="/api/auth/logout?returnTo=/">Cerrar sesión</a><div className="danger-zone"><h3>Zona de cuidado</h3><p>Eliminar tu cuenta borra permanentemente el perfil, recuerdos, mascota, álbum, autocuidado y chats de Nora.</p><button type="button" onClick={deleteAccount}>Eliminar mi cuenta y mis datos</button></div></section>}
     </div></section></div>}
+
+    {showGoogleWelcome && <div className="google-welcome-backdrop" role="presentation"><section className="google-welcome-card" role="dialog" aria-modal="true" aria-labelledby="google-welcome-title"><button type="button" className="google-welcome-close" onClick={dismissGoogleWelcome} aria-label="Cerrar bienvenida">×</button><div className="google-welcome-orbit" aria-hidden="true"><span>✦</span><span>♡</span><span>✧</span></div><span className="google-welcome-kicker">PRIMER ENCUENTRO CON NORA</span><div className="google-welcome-logo" aria-hidden="true"><span className="logo-mark large">n</span><span className="google-welcome-spark">✦</span></div><h2 id="google-welcome-title">Qué bueno verte, {profile.displayName.split(" ")[0] || user.name.split(" ")[0] || "amigo"}.</h2><p>Gracias por entrar con Google y confiarme un espacio tan personal. Puedes hablar a tu ritmo; no tienes que tener todo resuelto antes de empezar.</p><button type="button" className="google-welcome-cta" onClick={dismissGoogleWelcome}>Empezar a hablar <span>→</span></button><small>Tu espacio sigue siendo tuyo. Tú decides qué recordar y qué dejar solo para ti.</small></section></div>}
   </div>;
 }
 

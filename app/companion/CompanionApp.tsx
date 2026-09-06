@@ -44,7 +44,8 @@ export default function CompanionApp({ user, googleWelcome = false }: { user: { 
   const [shareMoment, setShareMoment] = useState(false);
   const [photoLoading, setPhotoLoading] = useState(false);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState(googleWelcome ? "¡Bienvenido a Nora! Gracias por entrar con Google y confiar en este espacio." : "");
+  const [notice, setNotice] = useState("");
+  const [showGoogleWelcome, setShowGoogleWelcome] = useState(googleWelcome);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,6 +80,10 @@ export default function CompanionApp({ user, googleWelcome = false }: { user: { 
     const url = new URL(window.location.href);
     url.searchParams.delete("welcome");
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    document.cookie = "nora_google_welcome=; Path=/; Max-Age=0; SameSite=Lax; Secure";
+    const closeWithEscape = (event: globalThis.KeyboardEvent) => { if (event.key === "Escape") setShowGoogleWelcome(false); };
+    document.addEventListener("keydown", closeWithEscape);
+    return () => document.removeEventListener("keydown", closeWithEscape);
   }, [googleWelcome]);
 
   const topActivities = useMemo(() => Object.entries(stats?.byActivity ?? {}).sort((a, b) => b[1] - a[1]).slice(0, 3), [stats]);
@@ -188,6 +193,8 @@ export default function CompanionApp({ user, googleWelcome = false }: { user: { 
     setError(message);
   }
 
+  function dismissGoogleWelcome() { setShowGoogleWelcome(false); }
+
   if (loading) return <div className="companion-loading"><span className="logo-mark large">n</span><p>Preparando un espacio tranquilo…</p></div>;
 
   if (!profile.companionEnabled) return <div className="companion-disabled"><div><span className="logo-mark large">n</span><p>COMPAÑERO EMOCIONAL</p><h1>Este espacio está desactivado.</h1><p>Está bien. Nora funciona completamente sin mascota y puedes volver a activarla cuando quieras.</p><button type="button" onClick={() => savePreference("companionEnabled", true)}>Activar mi compañero</button><Link href="/chat">Volver al chat</Link></div></div>;
@@ -225,6 +232,7 @@ export default function CompanionApp({ user, googleWelcome = false }: { user: { 
     </main>
 
     {(!companion.setupComplete || customizing) && <div className="pet-setup-backdrop"><section className="pet-setup" role="dialog" aria-modal="true" aria-labelledby="pet-setup-title"><header><div><span>{companion.setupComplete ? "PERSONALIZAR" : "PRIMER ENCUENTRO"}</span><h2 id="pet-setup-title">Crea un compañero que se sienta tuyo</h2><p>No necesita cuidados diarios y nunca te hará sentir culpable por ausentarte.</p></div>{companion.setupComplete && <button type="button" onClick={() => setCustomizing(false)} aria-label="Cerrar personalización">×</button>}</header><div className="setup-preview"><PetVisual companion={draft} state="idle"/><label>Nombre<input value={draft.name} onChange={event => setDraft(current => ({ ...current, name: event.target.value }))} maxLength={24}/></label></div><SetupChoice title="Tipo" options={PET_TYPES} value={draft.petType} onChange={value => setDraft(current => ({ ...current, petType: value }))}/><SetupChoice title="Apariencia" options={APPEARANCES} value={draft.appearance} onChange={value => setDraft(current => ({ ...current, appearance: value }))}/><SetupChoice title="Accesorio" options={ACCESSORIES} value={draft.accessory} onChange={value => setDraft(current => ({ ...current, accessory: value }))}/><SetupChoice title="Personalidad" options={PERSONALITIES} value={draft.personality} onChange={value => setDraft(current => ({ ...current, personality: value }))}/><SetupChoice title="Cómo se comunica" options={COMMUNICATION_STYLES} value={draft.communicationStyle} onChange={value => setDraft(current => ({ ...current, communicationStyle: value }))}/><footer><p>Podrás cambiar todo esto después. Nada se pierde.</p><button type="button" disabled={saving || draft.name.trim().length < 2} onClick={() => saveCompanion(!companion.setupComplete)}>{saving ? "Guardando…" : companion.setupComplete ? "Guardar cambios" : "Preparar su espacio"}</button></footer></section></div>}
+    {showGoogleWelcome && <div className="google-welcome-backdrop" role="presentation"><section className="google-welcome-card" role="dialog" aria-modal="true" aria-labelledby="google-welcome-title"><button type="button" className="google-welcome-close" onClick={dismissGoogleWelcome} aria-label="Cerrar bienvenida">×</button><div className="google-welcome-orbit" aria-hidden="true"><span>✦</span><span>♡</span><span>✧</span></div><span className="google-welcome-kicker">PRIMER ENCUENTRO CON NORA</span><div className="google-welcome-logo" aria-hidden="true"><span className="logo-mark large">n</span><span className="google-welcome-spark">✦</span></div><h2 id="google-welcome-title">Qué bueno verte, {profile.displayName.split(" ")[0] || user.name.split(" ")[0] || "amigo"}.</h2><p>Gracias por confiar en Nora. Este rincón está aquí para acompañarte a tu ritmo, sin exigencias y sin tener que explicarlo todo.</p><button type="button" className="google-welcome-cta" onClick={dismissGoogleWelcome}>Explorar mi espacio <span>→</span></button><small>Tu espacio sigue siendo tuyo. Tú decides qué recordar y qué dejar solo para ti.</small></section></div>}
   </div>;
 }
 
