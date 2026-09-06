@@ -112,7 +112,7 @@ export function companionMessage(input: { kind: "checkin" | "care" | "moment"; e
   const index = stableIndex(input.seed);
   if (input.kind === "care") {
     const label = ACTIVITY_LABELS[input.activity ?? ""] ?? "Hiciste algo para cuidarte";
-    const short = `${label}.`;
+    const short = `Queda reconocido: «${label.toLocaleLowerCase("es") }».`;
     return input.style === "brief" ? short : `${short} ${CARE_ENDINGS[index % CARE_ENDINGS.length]}`;
   }
   if (input.kind === "moment") {
