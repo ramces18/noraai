@@ -13,6 +13,13 @@ test("keeps credentials on the server and out of tracked source", async () => {
   assert.doesNotMatch(config, /GOOGLE_CLIENT_SECRET|OPENROUTER_API_KEY\s*"\s*:/);
 });
 
+test("keeps password hashing within Cloudflare Workers limits", async () => {
+  const credentials = await read("app/auth-credentials.ts");
+  assert.match(credentials, /const PASSWORD_ITERATIONS = 100_000/);
+  assert.match(credentials, /iterations > 100_000/);
+  assert.doesNotMatch(credentials, /PASSWORD_ITERATIONS = 120_000/);
+});
+
 test("uses recent bounded context and user-controlled memory", async () => {
   const chat = await read("app/api/chat/route.ts");
   assert.match(chat, /orderBy\(desc\(messages\.createdAt\)\)\.limit\(28\)/);

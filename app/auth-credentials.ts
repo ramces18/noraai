@@ -1,4 +1,6 @@
-const PASSWORD_ITERATIONS = 120_000;
+// Cloudflare Workers Web Crypto accepts at most 100,000 PBKDF2 iterations.
+// Keep this value at the platform limit so password accounts work in production.
+const PASSWORD_ITERATIONS = 100_000;
 
 export function normalizeEmail(value: string): string {
   return value.trim().toLocaleLowerCase("en-US");
@@ -19,7 +21,7 @@ export async function createPasswordRecord(password: string): Promise<{ password
 }
 
 export async function verifyPassword(password: string, salt: string, iterations: number, expected: string): Promise<boolean> {
-  if (iterations < 50_000 || iterations > 1_000_000) return false;
+  if (iterations < 50_000 || iterations > 100_000) return false;
   const actual = await derivePassword(password, fromBase64Url(salt), iterations);
   return constantTimeEqual(actual, expected);
 }
