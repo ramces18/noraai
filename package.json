@@ -15,6 +15,7 @@
     "deploy": "npm run build && wrangler deploy --keep-vars"
   },
   "dependencies": {
+    "@openrouter/sdk": "1.2.106",
     "drizzle-orm": "0.45.2",
     "react": "19.2.6",
     "react-dom": "19.2.6",

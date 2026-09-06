@@ -2,9 +2,10 @@ packages:
   - "."
 
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  '@openrouter/sdk': true
+  esbuild: true
+  sharp: true
+  workerd: true
 onlyBuiltDependencies:
   - esbuild
   - sharp

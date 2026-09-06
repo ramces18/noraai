@@ -1,3 +1,5 @@
+import { OpenRouter } from "@openrouter/sdk";
+import type { ChatStreamChunk } from "@openrouter/sdk/models";
 import { and, asc, desc, eq, gt } from "drizzle-orm";
 import { getDb } from "../../../db";
 import { conversations, memories, messages, users } from "../../../db/schema";
@@ -22,7 +24,6 @@ LÍMITES Y SEGURIDAD:
 - Si describe abuso o peligro, prioriza su seguridad y evita indicaciones que puedan aumentar el riesgo. Si es menor, sugiere acudir a una persona adulta segura o servicio local de protección.
 - Para cuestiones médicas, legales o medicamentos, reconoce el límite y recomienda ayuda cualificada sin alarmismo.`;
 
-type UpstreamResponse = { choices?: Array<{ message?: { content?: string } }> };
 type PromptMessage = { role: "user" | "assistant"; content: string };
 
 export async function POST(request: Request) {
@@ -78,19 +79,37 @@ export async function POST(request: Request) {
     const systemPrompt = `${BASE_PROMPT}\n\nPREFERENCIAS ACTUALES:\n${tone}\n${length}\n${personal}${memoryContext}`;
     const maxTokens = profile?.responseLength === "brief" ? 360 : profile?.responseLength === "deep" ? 900 : 650;
 
-    const upstream = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "HTTP-Referer": new URL(request.url).origin, "X-Title": "Nora" },
-      body: JSON.stringify({ model: "inclusionai/ling-3.0-flash-sante:free", messages: [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: text }], temperature: 0.78, max_tokens: maxTokens }),
-      signal: AbortSignal.timeout(45_000),
+    const openrouter = new OpenRouter({
+      apiKey,
+      httpReferer: new URL(request.url).origin,
+      appTitle: "Nora",
+      timeoutMs: 45_000,
     });
-    if (!upstream.ok) {
-      console.error(JSON.stringify({ event: "openrouter_failed", status: upstream.status, detail: await limitedText(upstream, 400) }));
-      const busy = upstream.status === 429 || upstream.status >= 500;
+    let answerText = "";
+    let reasoningTokens: number | undefined;
+    try {
+      const stream = await openrouter.chat.send({
+        chatRequest: {
+          model: "minimax/minimax-m3:free",
+          messages: [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: text }],
+          temperature: 0.78,
+          maxTokens,
+          stream: true,
+        },
+      }) as unknown as AsyncIterable<ChatStreamChunk>;
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content;
+        if (content && answerText.length < 8000) answerText += content.slice(0, 8000 - answerText.length);
+        reasoningTokens = chunk.usage?.completionTokensDetails?.reasoningTokens ?? reasoningTokens;
+      }
+    } catch (upstreamError) {
+      const status = getUpstreamStatus(upstreamError);
+      console.error(JSON.stringify({ event: "openrouter_failed", status, message: upstreamError instanceof Error ? upstreamError.message.slice(0, 400) : "unknown" }));
+      const busy = status === 429 || status >= 500;
       return Response.json({ error: busy ? "Nora está recibiendo muchas conversaciones ahora. Espera un momento y vuelve a intentarlo." : "Nora no pudo responder ahora. Inténtalo nuevamente." }, { status: 502 });
     }
-    const result = await upstream.json() as UpstreamResponse;
-    const answer = result.choices?.[0]?.message?.content?.trim().slice(0, 8000);
+    if (reasoningTokens !== undefined) console.log(JSON.stringify({ event: "openrouter_usage", reasoningTokens }));
+    const answer = answerText.trim();
     if (!answer) return Response.json({ error: "Nora no recibió una respuesta válida. Puedes intentarlo otra vez." }, { status: 502 });
 
     const now = Date.now();
@@ -133,16 +152,8 @@ function extractExplicitMemory(text: string): string | null {
   return match?.[1]?.trim().replace(/\s+/g, " ") || null;
 }
 
-async function limitedText(response: Response, limit: number): Promise<string> {
-  if (!response.body) return "";
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let output = "";
-  while (output.length < limit) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    output += decoder.decode(value, { stream: true });
-  }
-  await reader.cancel();
-  return output.slice(0, limit);
+function getUpstreamStatus(error: unknown): number {
+  if (typeof error !== "object" || error === null || !("statusCode" in error)) return 500;
+  const status = Number(error.statusCode);
+  return Number.isInteger(status) ? status : 500;
 }
