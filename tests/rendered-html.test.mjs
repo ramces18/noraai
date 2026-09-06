@@ -22,6 +22,15 @@ test("uses recent bounded context and user-controlled memory", async () => {
   assert.match(chat, /clientMessageId/);
 });
 
+test("separates facts from psychological interpretations", async () => {
+  const chat = await read("app/api/chat/route.ts");
+  assert.match(chat, /Distingue siempre los hechos de las interpretaciones/);
+  assert.match(chat, /Nunca presentes como certeza una causa, intención, necesidad, consecuencia futura, diagnóstico o estado psicológico/);
+  assert.match(chat, /Es preferible preguntar antes que completar los vacíos/);
+  assert.match(chat, /No abras con órdenes o fórmulas alarmistas/);
+  assert.match(chat, /\[nombre\], pará/);
+});
+
 test("offers responsive and accessible chat controls", async () => {
   const [app, css] = await Promise.all([read("app/chat/ChatApp.tsx"), read("app/chat/chat-app.css")]);
   assert.match(app, /aria-modal="true"/);
